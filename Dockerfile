@@ -7,8 +7,6 @@ RUN chmod +x /run.sh \
     && apt-get install -y --no-install-recommends openssh-server \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
-    && echo "ClientAliveInterval 5" >> /etc/ssh/sshd_config \
-    && echo "ClientAliveCountMax 120" >> /etc/ssh/sshd_config \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && apt-get clean all
 

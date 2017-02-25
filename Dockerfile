@@ -12,5 +12,6 @@ RUN apt-get update \
 
 EXPOSE 22 80 443
 
-CMD for i in ssh dropbear nginx; do service $i start; done \
-    && echo "root:$ROOT_PASS" | chpasswd
+CMD service nginx start \
+    && echo "root:$ROOT_PASS" | chpasswd \
+    && /usr/sbin/sshd -D

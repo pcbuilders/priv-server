@@ -1,6 +1,9 @@
 FROM       ubuntu:16.10
 
-RUN apt-get update \
+ADD run.sh /run.sh
+
+RUN chmod +x /run.sh \
+    && apt-get update \
     && apt-get install -y --no-install-recommends openssh-server dropbear nginx aria2 \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
@@ -10,6 +13,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && apt-get clean all
 
-EXPOSE 22
+EXPOSE 22 80 443
 
-CMD service ssh start
+CMD ["/run.sh"]

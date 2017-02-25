@@ -10,6 +10,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && apt-get clean all
 
-EXPOSE 22 80 443
+EXPOSE 22
 
 CMD service ssh start

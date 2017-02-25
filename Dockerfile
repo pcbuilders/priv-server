@@ -4,7 +4,7 @@ ADD run.sh /run.sh
 
 RUN chmod +x /run.sh \
     && apt-get update \
-    && apt-get install -y --no-install-recommends openssh-server dropbear nginx aria2 \
+    && apt-get install -y --no-install-recommends openssh-server dropbear nginx \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
     && echo "ClientAliveInterval 5\nClientAliveCountMax 120\n" >> /etc/ssh/sshd_config \

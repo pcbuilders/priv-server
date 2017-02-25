@@ -3,6 +3,7 @@ FROM       ubuntu:16.10
 ADD run.sh /run.sh
 
 RUN chmod +x /run.sh \
+    && mkdir -p /var/run/sshd \
     && apt-get update \
     && apt-get install -y --no-install-recommends openssh-server \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \

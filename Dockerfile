@@ -1,16 +1,18 @@
 FROM       ubuntu:16.10
 
-ADD run.sh /run.sh
-
-RUN chmod +x /run.sh \
-    && mkdir -p /var/run/sshd \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends openssh-server \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssh-server dropbear nginx aria2 \
     && sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+    && echo "ClientAliveInterval 5" >> /etc/ssh/sshd_config \
+    && echo "ClientAliveCountMax 120" >> /etc/ssh/sshd_config \
+    && sed -ri 's/NO_START=1/NO_START=0/g' /etc/default/dropbear \
+    && sed -ri 's/DROPBEAR_PORT=22/DROPBEAR_PORT=443/g' /etc/default/dropbear \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && apt-get clean all
 
-EXPOSE 22
+EXPOSE 22 80 443
 
-CMD ["/run.sh"]
+CMD echo "root:$ROOT_PASS" | chpasswd \
+    && for i in ssh nginx dropbear; do service $i restart; done \
+    && tail -f

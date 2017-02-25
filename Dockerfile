@@ -12,6 +12,4 @@ RUN apt-get update \
 
 EXPOSE 22 80 443
 
-CMD service nginx start \
-    && echo "root:$ROOT_PASS" | chpasswd \
-    && /usr/sbin/sshd -D
+CMD service ssh start
